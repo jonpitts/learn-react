@@ -1,11 +1,16 @@
 import React from 'react';
-import * as UI from '@chakra-ui/layout';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import ExamplesPage from './pages/ExamplesPage';
 
 const App: React.FC = () => {
   return (
-    <UI.Box p="4">
-      <UI.Heading>Hello React!</UI.Heading>
-    </UI.Box>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/">
+          <ExamplesPage />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 };
 
