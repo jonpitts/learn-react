@@ -4,16 +4,90 @@ import * as UI from '@chakra-ui/react';
 import * as dateFns from 'date-fns';
 import numeral from 'numeral';
 import { motion } from 'framer-motion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as icons from '@fortawesome/free-solid-svg-icons';
+import { useQueryParam, NumberParam, withDefault } from 'use-query-params';
+import useAxios from 'axios-hooks';
 
-// emotion
 // localstorage state
-// query state
 // context provider
-// axios get
 // hook form
-// font awesome
-
 // react-use examples (useKey, useHover, useTimeout, useInterval, useCopyToClipboard, usePrevious)
+
+const RestExample: React.FC = () => {
+  // https://github.com/simoneb/axios-hooks
+  const [{ data, loading, error }, refetch] = useAxios(
+    'https://baconipsum.com/api/?type=meat-and-filler&paras=1'
+  );
+
+  return (
+    <UI.Box mb={8}>
+      <UI.Heading size="md">Working with REST</UI.Heading>
+      <UI.UnorderedList>
+        <UI.ListItem>loading: {JSON.stringify(loading)}</UI.ListItem>
+        <UI.ListItem>error: {JSON.stringify(error)}</UI.ListItem>
+        <UI.ListItem>data: {JSON.stringify(data)}</UI.ListItem>
+      </UI.UnorderedList>
+      <UI.Button my={2} onClick={() => refetch()}>
+        Refetch
+      </UI.Button>
+    </UI.Box>
+  );
+};
+
+const QueryStateExample: React.FC = () => {
+  const [count, setCount] = useQueryParam('count', withDefault(NumberParam, 0));
+
+  return (
+    <UI.Box mb={8}>
+      <UI.Heading size="md">Working with querystring state</UI.Heading>
+      {/* https://github.com/pbeshai/use-query-params#readme */}
+      {/* Note that this implementation is dependent on React Router. */}
+      <UI.Button my={2} onClick={() => setCount(count + 1)}>
+        Click me!
+      </UI.Button>
+      <UI.Text>The button has been clicked {count} times.</UI.Text>
+    </UI.Box>
+  );
+};
+
+const ToastExample: React.FC = () => {
+  const toast = UI.useToast();
+  return (
+    <UI.Box mb={8}>
+      <UI.Heading size="md">Working with toasts</UI.Heading>
+      {/* https://chakra-ui.com/docs/feedback/toast */}
+      <UI.Button
+        my={4}
+        onClick={() =>
+          toast({
+            title: 'Account created.',
+            description: "We've created your account for you.",
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+          })
+        }
+      >
+        Show Toast
+      </UI.Button>
+    </UI.Box>
+  );
+};
+
+const IconExample: React.FC = () => {
+  return (
+    <UI.Box mb={8}>
+      <UI.Heading size="md">Working with icons</UI.Heading>
+      {/* https://fontawesome.com/v5.15/how-to-use/on-the-web/using-with/react */}
+      <UI.SimpleGrid gap={4} padding={4}>
+        <FontAwesomeIcon icon={icons.faCoffee} />
+        <FontAwesomeIcon icon={icons.faCoffee} flip="horizontal" />
+        <FontAwesomeIcon icon={icons.faCoffee} spin />
+      </UI.SimpleGrid>
+    </UI.Box>
+  );
+};
 
 const StateExample: React.FC = () => {
   const [count, setCount] = React.useState(0);
@@ -22,18 +96,10 @@ const StateExample: React.FC = () => {
     <UI.Box mb={8}>
       <UI.Heading size="md">Working with component state</UI.Heading>
       {/* https://reactjs.org/docs/hooks-state.html */}
-      <UI.UnorderedList>
-        <UI.ListItem>
-          <UI.Button
-            colorScheme="green"
-            my={2}
-            onClick={() => setCount((value) => value + 1)}
-          >
-            Click me!
-          </UI.Button>
-          <UI.Text>The button has been clicked {count} times.</UI.Text>
-        </UI.ListItem>
-      </UI.UnorderedList>
+      <UI.Button my={2} onClick={() => setCount((value) => value + 1)}>
+        Click me!
+      </UI.Button>
+      <UI.Text>The button has been clicked {count} times.</UI.Text>
     </UI.Box>
   );
 };
@@ -117,11 +183,15 @@ const ExamplesPage: React.FC = () => {
         Examples
       </UI.Heading>
 
-      <StateExample />
-      <CollectionsExample />
       <NumbersExample />
       <DatesExample />
+      <IconExample />
       <MotionExample />
+      <ToastExample />
+      <CollectionsExample />
+      <StateExample />
+      <QueryStateExample />
+      <RestExample />
     </UI.Box>
   );
 };
