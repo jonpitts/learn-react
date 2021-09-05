@@ -1,6 +1,11 @@
-# Getting Started with Create React App
+# learn-react
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), with a few additions:
+
+- [Prettier](https://prettier.io/) configuration
+- [VSCode](https://code.visualstudio.com/) configuration
+- [Storybook](https://storybook.js.org)
+- Several helpful NPM modules and an Examples page demonstrating basic usage.
 
 ## Available Scripts
 
@@ -18,6 +23,11 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### `yarn storybook`
+
+Launches the Storybook instance.\
+See [Storybook's docs](https://storybook.js.org/docs/react/get-started/introduction) for more help writing stories.
 
 ### `yarn build`
 
