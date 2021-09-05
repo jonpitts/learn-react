@@ -382,18 +382,20 @@ type ExampleFormData = {
   exampleRequired: string;
 };
 const FormExample: React.FC = () => {
+  const form = reactHookForm.useForm<ExampleFormData>({
+    defaultValues: { example: 'test' },
+  });
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = reactHookForm.useForm<ExampleFormData>({
-    defaultValues: { example: 'test' },
-  });
+  } = form;
   const formData = watch();
 
-  const onSubmit: reactHookForm.SubmitHandler<ExampleFormData> = (data) =>
+  const onSubmit: reactHookForm.SubmitHandler<ExampleFormData> = (data) => {
     console.log(data);
+  };
 
   return (
     <UI.Box mb={8}>
