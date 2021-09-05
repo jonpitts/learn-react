@@ -7,9 +7,9 @@ import { motion } from 'framer-motion';
 import _ from 'lodash';
 import numeral from 'numeral';
 import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import * as ReactRouter from 'react-router-dom';
-import * as ReactUse from 'react-use';
+import * as reactHookForm from 'react-hook-form';
+import * as reactRouter from 'react-router-dom';
+import * as reactUse from 'react-use';
 import useLocalStorageState from 'use-local-storage-state';
 import { useQueryParam, NumberParam, withDefault } from 'use-query-params';
 import * as util from 'util';
@@ -128,7 +128,7 @@ const ToastExample: React.FC = () => {
 // https://reactrouter.com/web/guides/quick-start
 // (Add more routes in App.tsx.)
 const LinksExample: React.FC = () => {
-  const params = ReactRouter.useParams<{ segment: string }>();
+  const params = reactRouter.useParams<{ segment: string }>();
 
   return (
     <UI.Box mb={8}>
@@ -138,13 +138,13 @@ const LinksExample: React.FC = () => {
       <UI.UnorderedList>
         <UI.ListItem>
           Plain link:{' '}
-          <UI.Link as={ReactRouter.Link} to="/" color="blue.300">
+          <UI.Link as={reactRouter.Link} to="/" color="blue.300">
             examples
           </UI.Link>
         </UI.ListItem>
         <UI.ListItem>
           Link w/Segment:{' '}
-          <UI.Link as={ReactRouter.Link} to="/example-segment" color="blue.300">
+          <UI.Link as={reactRouter.Link} to="/example-segment" color="blue.300">
             examples/example-segment
           </UI.Link>
         </UI.ListItem>
@@ -181,7 +181,7 @@ const CollectionsExample: React.FC = () => {
 const IntervalExample: React.FC = () => {
   const [count, setCount] = React.useState(0);
 
-  ReactUse.useInterval(() => {
+  reactUse.useInterval(() => {
     setCount(count + 1);
   }, 1000);
 
@@ -200,7 +200,7 @@ const IntervalExample: React.FC = () => {
 const CopyToClipboardExample: React.FC = () => {
   const url =
     'https://github.com/streamich/react-use/blob/master/docs/useCopyToClipboard.md';
-  const [state, copyToClipboard] = ReactUse.useCopyToClipboard();
+  const [state, copyToClipboard] = reactUse.useCopyToClipboard();
 
   return (
     <UI.Box mb={8}>
@@ -242,7 +242,7 @@ const StateExample: React.FC = () => {
 // https://github.com/streamich/react-use/blob/master/docs/usePrevious.md
 const PreviousExample: React.FC = () => {
   const [value, setValue] = React.useState('');
-  const previousValue = ReactUse.usePrevious(value);
+  const previousValue = reactUse.usePrevious(value);
 
   return (
     <UI.Box mb={8}>
@@ -307,7 +307,7 @@ const LocalStorageExample: React.FC = () => {
 // https://github.com/streamich/react-use/blob/master/docs/useKey.md
 const KeyPressExample: React.FC = () => {
   const [count, setCount] = React.useState(0);
-  ReactUse.useKey('ArrowRight', () => setCount((count) => count + 1));
+  reactUse.useKey('ArrowRight', () => setCount((count) => count + 1));
 
   return (
     <UI.Box mb={8}>
@@ -352,7 +352,7 @@ const ElementRefExample: React.FC = () => {
 // https://github.com/streamich/react-use/blob/master/docs/useHover.md
 const HoverExample: React.FC = () => {
   const elementRef = React.useRef<HTMLDivElement>(null);
-  const hovered = ReactUse.useHoverDirty(elementRef);
+  const hovered = reactUse.useHoverDirty(elementRef);
 
   return (
     <UI.Box mb={8}>
@@ -387,10 +387,13 @@ const FormExample: React.FC = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<ExampleFormData>({ defaultValues: { example: 'test' } });
+  } = reactHookForm.useForm<ExampleFormData>({
+    defaultValues: { example: 'test' },
+  });
   const formData = watch();
 
-  const onSubmit: SubmitHandler<ExampleFormData> = (data) => console.log(data);
+  const onSubmit: reactHookForm.SubmitHandler<ExampleFormData> = (data) =>
+    console.log(data);
 
   return (
     <UI.Box mb={8}>
