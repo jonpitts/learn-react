@@ -3,7 +3,7 @@ import * as icons from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useAxios from 'axios-hooks';
 import * as dateFns from 'date-fns';
-import { motion } from 'framer-motion';
+import * as FramerMotion from 'framer-motion';
 import _ from 'lodash';
 import numeral from 'numeral';
 import React from 'react';
@@ -14,8 +14,15 @@ import useLocalStorageState from 'use-local-storage-state';
 import { useQueryParam, NumberParam, withDefault } from 'use-query-params';
 import * as util from 'util';
 
-// https://create-react-app.dev/docs/adding-images-fonts-and-files/
 import logoSrc from '../images/logo.svg';
+
+// Wrap components with Framer Motion for use in animated components.
+// (You only have to do this once.)
+const MotionUI = {
+  Box: FramerMotion.motion(UI.Box),
+};
+
+// https://create-react-app.dev/docs/adding-images-fonts-and-files/
 const ImageExample: React.FC = () => {
   return (
     <UI.Box mb={8}>
@@ -75,11 +82,6 @@ const IconExample: React.FC = () => {
 };
 
 // https://www.framer.com/docs/
-// Wrap components with Framer Motion
-// (You only have to do this once.)
-const MotionUI = {
-  Box: motion(UI.Box),
-};
 const MotionExample: React.FC = () => {
   return (
     <UI.Box mb={8}>
@@ -235,6 +237,62 @@ const StateExample: React.FC = () => {
         Click me!
       </UI.Button>
       <UI.Text>The button has been clicked {count} times.</UI.Text>
+    </UI.Box>
+  );
+};
+
+// https://www.framer.com/docs/animate-presence/
+const AnimatedPresenceExample: React.FC = () => {
+  const [value, setValue] = React.useState(true);
+
+  return (
+    <UI.Box mb={8}>
+      <UI.Heading size="md" mb={4}>
+        Working with animated presence
+      </UI.Heading>
+      <UI.Button mb={2} onClick={() => setValue((value) => !value)}>
+        Toggle
+      </UI.Button>
+      <FramerMotion.AnimatePresence>
+        {value ? (
+          <MotionUI.Box
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            bg="green.300"
+            borderRadius="4px"
+            w="50px"
+            h="50px"
+            m={4}
+          ></MotionUI.Box>
+        ) : null}
+      </FramerMotion.AnimatePresence>
+    </UI.Box>
+  );
+};
+
+// https://www.framer.com/docs/component/
+const TransitionExample: React.FC = () => {
+  const [value, setValue] = React.useState(true);
+
+  return (
+    <UI.Box mb={8}>
+      <UI.Heading size="md" mb={4}>
+        Working with transitions
+      </UI.Heading>
+      <UI.Button mb={2} onClick={() => setValue((value) => !value)}>
+        Toggle
+      </UI.Button>
+      <MotionUI.Box
+        animate={{
+          x: value ? 0 : 100,
+        }}
+        bg="green.300"
+        borderRadius="4px"
+        w="50px"
+        h="50px"
+        m={4}
+      ></MotionUI.Box>
     </UI.Box>
   );
 };
@@ -502,6 +560,8 @@ const ExamplesPage: React.FC = () => {
     IntervalExample,
     CopyToClipboardExample,
     StateExample,
+    AnimatedPresenceExample,
+    TransitionExample,
     PreviousExample,
     QueryStateExample,
     LocalStorageExample,
