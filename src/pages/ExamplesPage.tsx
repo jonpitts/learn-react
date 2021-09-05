@@ -8,10 +8,24 @@ import _ from 'lodash';
 import numeral from 'numeral';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import * as ReactRouter from 'react-router-dom';
 import * as ReactUse from 'react-use';
 import useLocalStorageState from 'use-local-storage-state';
 import { useQueryParam, NumberParam, withDefault } from 'use-query-params';
 import * as util from 'util';
+
+// https://create-react-app.dev/docs/adding-images-fonts-and-files/
+import logoSrc from '../images/logo.svg';
+const ImageExample: React.FC = () => {
+  return (
+    <UI.Box mb={8}>
+      <UI.Heading size="md" mb={4}>
+        Working with images
+      </UI.Heading>
+      <img src={logoSrc} alt="Logo" width="100" />
+    </UI.Box>
+  );
+};
 
 // http://numeraljs.com
 const NumbersExample: React.FC = () => {
@@ -107,6 +121,35 @@ const ToastExample: React.FC = () => {
       >
         Show Toast
       </UI.Button>
+    </UI.Box>
+  );
+};
+
+// https://reactrouter.com/web/guides/quick-start
+// (Add more routes in App.tsx.)
+const LinksExample: React.FC = () => {
+  const params = ReactRouter.useParams<{ segment: string }>();
+
+  return (
+    <UI.Box mb={8}>
+      <UI.Heading size="md" mb={4}>
+        Working with links
+      </UI.Heading>
+      <UI.UnorderedList>
+        <UI.ListItem>
+          Plain link:{' '}
+          <UI.Link as={ReactRouter.Link} to="/" color="blue.300">
+            examples
+          </UI.Link>
+        </UI.ListItem>
+        <UI.ListItem>
+          Link w/Segment:{' '}
+          <UI.Link as={ReactRouter.Link} to="/example-segment" color="blue.300">
+            examples/example-segment
+          </UI.Link>
+        </UI.ListItem>
+        <UI.ListItem>Captured segment: "{params.segment}"</UI.ListItem>
+      </UI.UnorderedList>
     </UI.Box>
   );
 };
@@ -443,11 +486,13 @@ const ContextExample: React.FC = () => {
 
 const ExamplesPage: React.FC = () => {
   const exampleComponents = [
+    ImageExample,
     NumbersExample,
     DatesExample,
     IconExample,
     MotionExample,
     ToastExample,
+    LinksExample,
     CollectionsExample,
     IntervalExample,
     CopyToClipboardExample,

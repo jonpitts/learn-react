@@ -9,6 +9,9 @@ const App: React.FC = () => {
     <BrowserRouter>
       <QueryParamProvider ReactRouterRoute={Route}>
         <Switch>
+          <Route path="/:segment">
+            <ExamplesPage />
+          </Route>
           <Route path="/">
             <ExamplesPage />
           </Route>
