@@ -7,6 +7,18 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
   (Install the Prettier extension for autoformatting.)
 - [Storybook](https://storybook.js.org)
 - Several helpful NPM modules and an Examples page demonstrating basic usage.
+  - [axios-hooks](https://github.com/simoneb/axios-hooks)
+  - [chakra-ui](https://chakra-ui.com/docs/getting-started)
+  - [date-fns](https://date-fns.org/docs/Getting-Started)
+  - [fontawesome](https://fontawesome.com/v5.15/how-to-use/on-the-web/using-with/react)
+  - [framer-motion](https://www.framer.com/docs/)
+  - [lodash](https://lodash.com/docs)
+  - [numeral](http://numeraljs.com)
+  - [react-hook-form](https://react-hook-form.com/get-started)
+  - [react-router](https://reactrouter.com/web/guides/quick-start)
+  - [react-use](https:github.com/streamich/react-use/blob/master/docs/useInterval.md)
+  - [use-local-storage-state](https://www.npmjs.com/package/use-local-storage-state)
+  - [use-query-params](https://github.com/pbeshai/use-query-params#readme)
 
 ## Available Scripts
 
