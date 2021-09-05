@@ -147,7 +147,7 @@ const IntervalExample: React.FC = () => {
       <UI.Heading size="md" mb={4}>
         Working with setInterval
       </UI.Heading>
-      <UI.Text mb={2}>(The loops runs every second.)</UI.Text>
+      <UI.Text mb={2}>(The loop runs every second.)</UI.Text>
       <UI.Text mb={2}>Count: {count}</UI.Text>
     </UI.Box>
   );
