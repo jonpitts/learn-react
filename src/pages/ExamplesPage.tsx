@@ -143,7 +143,7 @@ const IntervalExample: React.FC = () => {
   }, 1000);
 
   return (
-    <UI.Box mb={8} maxW="320px">
+    <UI.Box mb={8}>
       <UI.Heading size="md" mb={4}>
         Working with setInterval
       </UI.Heading>
@@ -160,7 +160,7 @@ const CopyToClipboardExample: React.FC = () => {
   const [state, copyToClipboard] = ReactUse.useCopyToClipboard();
 
   return (
-    <UI.Box mb={8} maxW="680px">
+    <UI.Box mb={8}>
       <UI.Heading size="md" mb={4}>
         Working with the clipboard
       </UI.Heading>
@@ -202,7 +202,7 @@ const PreviousExample: React.FC = () => {
   const previousValue = ReactUse.usePrevious(value);
 
   return (
-    <UI.Box mb={8} maxW="320px">
+    <UI.Box mb={8}>
       <UI.Heading size="md" mb={4}>
         Working with the previous value
       </UI.Heading>
@@ -354,7 +354,7 @@ const FormExample: React.FC = () => {
       <UI.Heading size="md" mb={4}>
         Working with forms
       </UI.Heading>
-      <UI.Box maxW="280px" mb={2}>
+      <UI.Box mb={2}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <UI.FormControl mb={4}>
             <UI.Input {...register('example')} />
@@ -442,30 +442,40 @@ const ContextExample: React.FC = () => {
 };
 
 const ExamplesPage: React.FC = () => {
+  const exampleComponents = [
+    NumbersExample,
+    DatesExample,
+    IconExample,
+    MotionExample,
+    ToastExample,
+    CollectionsExample,
+    IntervalExample,
+    CopyToClipboardExample,
+    StateExample,
+    PreviousExample,
+    QueryStateExample,
+    LocalStorageExample,
+    KeyPressExample,
+    ElementRefExample,
+    HoverExample,
+    FormExample,
+    RestExample,
+    ContextExample,
+  ];
+
   return (
     <UI.Box p="4">
       <UI.Heading size="3xl" mb={8}>
         Examples
       </UI.Heading>
 
-      <NumbersExample />
-      <DatesExample />
-      <IconExample />
-      <MotionExample />
-      <ToastExample />
-      <CollectionsExample />
-      <IntervalExample />
-      <CopyToClipboardExample />
-      <StateExample />
-      <PreviousExample />
-      <QueryStateExample />
-      <LocalStorageExample />
-      <KeyPressExample />
-      <ElementRefExample />
-      <HoverExample />
-      <FormExample />
-      <RestExample />
-      <ContextExample />
+      <UI.SimpleGrid minChildWidth="400px" spacing={2}>
+        {_.map(exampleComponents, (Component) => (
+          <UI.Box bg="gray.900" borderRadius="8px" p={6} minH="240px">
+            <Component />
+          </UI.Box>
+        ))}
+      </UI.SimpleGrid>
     </UI.Box>
   );
 };
