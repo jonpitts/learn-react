@@ -3,7 +3,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), with a few additions:
 
 - [Prettier](https://prettier.io/) configuration
-- [VSCode](https://code.visualstudio.com/) configuration
+- [VSCode](https://code.visualstudio.com/) configuration\
+  (Install the Prettier extension for autoformatting.)
 - [Storybook](https://storybook.js.org)
 - Several helpful NPM modules and an Examples page demonstrating basic usage.
 
