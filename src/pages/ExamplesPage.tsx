@@ -581,7 +581,7 @@ const ExamplesPage: React.FC = () => {
 
       <UI.SimpleGrid minChildWidth="400px" spacing={2}>
         {_.map(exampleComponents, (Component) => (
-          <UI.Box bg="gray.900" borderRadius="8px" p={6} minH="240px">
+          <UI.Box bg="white" borderRadius="8px" p={6} minH="240px">
             <Component />
           </UI.Box>
         ))}
