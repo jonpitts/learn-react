@@ -253,7 +253,9 @@ const AnimatedPresenceExample: React.FC = () => {
       <UI.Button mb={2} onClick={() => setValue((value) => !value)}>
         Toggle
       </UI.Button>
-      <FramerMotion.AnimatePresence>
+      <FramerMotion.AnimatePresence
+        onExitComplete={() => console.log('onExitComplete')}
+      >
         {value ? (
           <MotionUI.Box
             initial={{ opacity: 0 }}
@@ -293,6 +295,85 @@ const TransitionExample: React.FC = () => {
         h="50px"
         m={4}
       ></MotionUI.Box>
+    </UI.Box>
+  );
+};
+
+// https://www.framer.com/docs/animation/#component-animation-controls
+const AnimationControlsExample: React.FC = () => {
+  const animationControl = FramerMotion.useAnimation();
+
+  const startAnimation = () => {
+    animationControl.start({
+      scale: [0.5, 1, 0.5],
+      transition: { duration: 0.3 },
+    });
+  };
+
+  return (
+    <UI.Box mb={8}>
+      <UI.Heading size="md" mb={4}>
+        Working with animation controls
+      </UI.Heading>
+      <UI.Button mb={2} onClick={startAnimation}>
+        Start
+      </UI.Button>
+      <MotionUI.Box
+        m={4}
+        bg="green.300"
+        borderRadius="4px"
+        w="50px"
+        h="50px"
+        initial={{ scale: 0.5 }}
+        animate={animationControl}
+      ></MotionUI.Box>
+    </UI.Box>
+  );
+};
+
+// https://www.framer.com/docs/animation/#sequencing
+const AnimationControlSequencingExample: React.FC = () => {
+  const animationControls = [
+    FramerMotion.useAnimation(),
+    FramerMotion.useAnimation(),
+    FramerMotion.useAnimation(),
+    FramerMotion.useAnimation(),
+    FramerMotion.useAnimation(),
+  ];
+
+  // Using async/await will wait for each animation to end before continuing to the next
+  const startAnimationSequence = async () => {
+    for (let i = 0; i < animationControls.length; i += 1) {
+      await animationControls[i].start({
+        scale: [0.5, 1, 0.5],
+        transition: { duration: 0.3 },
+      });
+    }
+  };
+
+  return (
+    <UI.Box mb={8}>
+      <UI.Heading size="md" mb={4}>
+        Working with animation control sequencing
+      </UI.Heading>
+      <UI.Button mb={2} onClick={startAnimationSequence}>
+        Start
+      </UI.Button>
+      <UI.Stack direction="row" m={4}>
+        {_.map(animationControls, (animationControl, i) => {
+          return (
+            <MotionUI.Box
+              key={i}
+              bg="green.300"
+              borderRadius="4px"
+              w="50px"
+              h="50px"
+              initial={{ scale: 0.5 }}
+              animate={animationControl}
+            ></MotionUI.Box>
+          );
+        })}
+      </UI.Stack>
     </UI.Box>
   );
 };
@@ -562,6 +643,8 @@ const ExamplesPage: React.FC = () => {
     StateExample,
     AnimatedPresenceExample,
     TransitionExample,
+    AnimationControlsExample,
+    AnimationControlSequencingExample,
     PreviousExample,
     QueryStateExample,
     LocalStorageExample,
