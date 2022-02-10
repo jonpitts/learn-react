@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useAxios from 'axios-hooks';
 import * as dateFns from 'date-fns';
 import * as FramerMotion from 'framer-motion';
+import * as Motion from 'motion';
 import _ from 'lodash';
 import numeral from 'numeral';
 import React from 'react';
@@ -86,7 +87,7 @@ const MotionExample: React.FC = () => {
   return (
     <UI.Box mb={8}>
       <UI.Heading size="md" mb={4}>
-        Working with animation
+        Working with Framer animation
       </UI.Heading>
       <MotionUI.Box
         animate={{ rotate: 360 }}
@@ -96,7 +97,42 @@ const MotionExample: React.FC = () => {
         w="50px"
         h="50px"
         m={4}
-      ></MotionUI.Box>
+      />
+    </UI.Box>
+  );
+};
+
+// https://motion.dev/guides/quick-start
+const MotionExample2: React.FC = () => {
+  React.useEffect(() => {
+    const animation = Motion.animate(
+      '#box',
+      { rotate: 360 },
+      {
+        duration: 2,
+        repeat: Infinity,
+        easing: 'linear',
+      }
+    );
+    return () => {
+      animation.cancel();
+    };
+  });
+
+  return (
+    <UI.Box mb={8}>
+      <UI.Heading size="md" mb={4}>
+        Working with Motion One animation
+      </UI.Heading>
+      <UI.Box
+        id="box"
+        bg="green.300"
+        borderRadius="4px"
+        w="50px"
+        h="50px"
+        m={4}
+      />
+      {/* <UI.Button onClick={wiggle}>Wiggle</UI.Button> */}
     </UI.Box>
   );
 };
@@ -635,6 +671,7 @@ const ExamplesPage: React.FC = () => {
     DatesExample,
     IconExample,
     MotionExample,
+    MotionExample2,
     ToastExample,
     LinksExample,
     CollectionsExample,
