@@ -83,11 +83,11 @@ const IconExample: React.FC = () => {
 };
 
 // https://www.framer.com/docs/
-const MotionExample: React.FC = () => {
+const FramerMotionPropsExample: React.FC = () => {
   return (
     <UI.Box mb={8}>
       <UI.Heading size="md" mb={4}>
-        Working with Framer animation
+        Working with Framer Motion props
       </UI.Heading>
       <MotionUI.Box
         animate={{ rotate: 360 }}
@@ -102,15 +102,50 @@ const MotionExample: React.FC = () => {
   );
 };
 
+// https://www.framer.com/docs/
+const FramerMotionHooksExample: React.FC = () => {
+  const animation = FramerMotion.useAnimation();
+
+  React.useEffect(() => {
+    animation.start({
+      rotate: 360,
+      transition: {
+        repeat: Infinity,
+        duration: 2,
+        ease: 'linear',
+      },
+    });
+    return () => {
+      animation.stop();
+    };
+  });
+
+  return (
+    <UI.Box mb={8}>
+      <UI.Heading size="md" mb={4}>
+        Working with Framer Motion hooks
+      </UI.Heading>
+      <MotionUI.Box
+        animate={animation}
+        bg="green.300"
+        borderRadius="4px"
+        w="50px"
+        h="50px"
+        m={4}
+      />
+    </UI.Box>
+  );
+};
+
 // https://motion.dev/guides/quick-start
-const MotionExample2: React.FC = () => {
+const MotionOneExample: React.FC = () => {
   React.useEffect(() => {
     const animation = Motion.animate(
       '#box',
       { rotate: 360 },
       {
-        duration: 2,
         repeat: Infinity,
+        duration: 2,
         easing: 'linear',
       }
     );
@@ -122,7 +157,7 @@ const MotionExample2: React.FC = () => {
   return (
     <UI.Box mb={8}>
       <UI.Heading size="md" mb={4}>
-        Working with Motion One animation
+        Working with Motion One
       </UI.Heading>
       <UI.Box
         id="box"
@@ -132,7 +167,6 @@ const MotionExample2: React.FC = () => {
         h="50px"
         m={4}
       />
-      {/* <UI.Button onClick={wiggle}>Wiggle</UI.Button> */}
     </UI.Box>
   );
 };
@@ -670,8 +704,9 @@ const ExamplesPage: React.FC = () => {
     NumbersExample,
     DatesExample,
     IconExample,
-    MotionExample,
-    MotionExample2,
+    FramerMotionPropsExample,
+    FramerMotionHooksExample,
+    MotionOneExample,
     ToastExample,
     LinksExample,
     CollectionsExample,
