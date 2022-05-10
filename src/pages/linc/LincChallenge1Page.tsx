@@ -1,3 +1,4 @@
+import React from 'react';
 import * as UI from '@chakra-ui/react';
 import { AxiosError } from 'axios';
 import useAxios from 'axios-hooks';
@@ -15,9 +16,13 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 /**
  * Utility to captialize the first letter of a string, and add a period.
  */
-const formatErrorMessage = (str: string | undefined) => {
-  if (str === undefined) return '';
-  return str.charAt(0).toUpperCase() + str.slice(1) + '.';
+const formatError = (fieldError: reactHookForm.FieldError | undefined) => {
+  if (fieldError?.message === undefined) return '';
+  return (
+    fieldError.message.charAt(0).toUpperCase() +
+    fieldError.message.slice(1) +
+    '.'
+  );
 };
 
 interface BreedData {
@@ -131,7 +136,7 @@ const PupperForm: React.FC<PupperFormProps> = ({ onSubmit }) => {
               <UI.FormLabel>Dog's name</UI.FormLabel>
               <UI.Input {...register('name')} />
               <UI.FormErrorMessage>
-                {formatErrorMessage(errors.name?.message)}
+                {formatError(errors.name)}
               </UI.FormErrorMessage>
             </UI.FormControl>
 
@@ -145,7 +150,7 @@ const PupperForm: React.FC<PupperFormProps> = ({ onSubmit }) => {
                 ))}
               </UI.Select>
               <UI.FormErrorMessage>
-                {formatErrorMessage(errors.breed?.message)}
+                {formatError(errors.breed)}
               </UI.FormErrorMessage>
             </UI.FormControl>
 
@@ -155,7 +160,7 @@ const PupperForm: React.FC<PupperFormProps> = ({ onSubmit }) => {
               </UI.FormLabel>
               <UI.Textarea resize="none" {...register('info')} />
               <UI.FormErrorMessage>
-                {formatErrorMessage(errors.info?.message)}
+                {formatError(errors.info)}
               </UI.FormErrorMessage>
             </UI.FormControl>
 
@@ -174,9 +179,16 @@ const PupperForm: React.FC<PupperFormProps> = ({ onSubmit }) => {
 };
 
 const LincChallange1Page: React.FC = () => {
+  const [formCount, setFormCount] = React.useState(0);
+
+  const handleSubmit = async () => {
+    await sleep(2000);
+    setFormCount(formCount + 1); // remount (and clear) form
+  };
+
   return (
     <UI.Box p={4}>
-      <PupperForm onSubmit={() => sleep(2000)} />
+      <PupperForm key={formCount} onSubmit={handleSubmit} />
     </UI.Box>
   );
 };
