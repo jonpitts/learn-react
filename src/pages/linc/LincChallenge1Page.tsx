@@ -2,15 +2,13 @@ import * as UI from '@chakra-ui/react';
 import { AxiosError } from 'axios';
 import useAxios from 'axios-hooks';
 import * as reactHookForm from 'react-hook-form';
-// import util from 'util';
 import flatMap from 'lodash/flatMap';
 import startCase from 'lodash/startCase';
 
-interface FormData {
-  name: string;
-  breed: string;
-  info?: string;
-}
+/**
+ * Utility for simulating delays in async operations.
+ */
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 interface BreedData {
   message: {
@@ -30,6 +28,7 @@ const useBreeds = (): [string[], boolean, AxiosError | undefined] => {
     return [[], loading, error];
   }
 
+  // Unwrap the data into a flat list of strings.
   const breeds: string[] = flatMap(data.message, (names, key) => {
     return names.map((name) => `${name} ${key}`);
   }).sort();
@@ -37,27 +36,54 @@ const useBreeds = (): [string[], boolean, AxiosError | undefined] => {
   return [breeds, loading, error];
 };
 
-const FormExample: React.FC = () => {
+interface FormData {
+  name: string;
+  breed: string;
+  info?: string;
+}
+
+interface FormExampleProps {
+  onSubmit?: (data: FormData) => any;
+}
+
+const FormExample: React.FC<FormExampleProps> = ({ onSubmit }) => {
   const [breeds, loading, error] = useBreeds();
-  const form = reactHookForm.useForm<FormData>();
+  const form = reactHookForm.useForm<FormData>({ mode: 'onChange' });
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { isSubmitting, errors },
   } = form;
-  // const formData = watch();
   const name = watch('name');
+  const toast = UI.useToast({
+    // Default toast properties
+    position: 'top-right',
+    isClosable: true,
+  });
 
-  const onSubmit: reactHookForm.SubmitHandler<FormData> = (data) => {
-    console.log(data);
+  const onValid: reactHookForm.SubmitHandler<FormData> = async (data) => {
+    await onSubmit?.(data);
+    toast({
+      title: 'Form submitted',
+      description: `Best of luck to ${data.name}!`,
+      status: 'success',
+    });
+  };
+
+  const onInvalid: reactHookForm.SubmitErrorHandler<FormData> = (data) => {
+    toast({
+      title: 'Oops!',
+      description: 'Please fix the errors in the form.',
+      status: 'error',
+    });
   };
 
   if (loading) {
-    return <UI.Spinner size="xl" />;
+    return <UI.Spinner />;
   }
   if (error) {
-    return <UI.Text>Error</UI.Text>;
+    return <UI.Alert colorScheme="red">Error loading dog breeds.</UI.Alert>;
   }
 
   return (
@@ -74,62 +100,71 @@ const FormExample: React.FC = () => {
         "Pup of the Year" submission form
       </UI.Heading>
       <UI.Box mb={2}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <UI.FormControl mb={4} isInvalid={!!errors.name}>
-            <UI.FormLabel>Dog's name</UI.FormLabel>
-            <UI.Input
-              {...register('name', {
-                required: 'Required.',
-                maxLength: {
-                  value: 20,
-                  message: 'Name must be 20 characters or less.',
-                },
-              })}
-            />
-            <UI.FormErrorMessage>{errors.name?.message}</UI.FormErrorMessage>
-          </UI.FormControl>
+        <form onSubmit={handleSubmit(onValid, onInvalid)}>
+          <fieldset disabled={isSubmitting}>
+            <UI.FormControl mb={4} isInvalid={!!errors.name}>
+              <UI.FormLabel>Dog's name</UI.FormLabel>
+              <UI.Input
+                {...register('name', {
+                  required: 'Required.',
+                  maxLength: {
+                    value: 20,
+                    message: 'Name must be 20 characters or less.',
+                  },
+                  validate: {
+                    cujo: (value) => value.toLowerCase() !== 'cujo',
+                  },
+                })}
+              />
+              <UI.FormErrorMessage>
+                {errors.name?.type === 'cujo'
+                  ? 'Cujo is not allowed.'
+                  : errors.name?.message}
+              </UI.FormErrorMessage>
+            </UI.FormControl>
 
-          <UI.FormControl mb={4} isInvalid={!!errors.breed}>
-            <UI.FormLabel>Breed</UI.FormLabel>
-            <UI.Select
-              placeholder="Select one"
-              {...register('breed', {
-                required: 'Required.',
-              })}
+            <UI.FormControl mb={4} isInvalid={!!errors.breed}>
+              <UI.FormLabel>Breed</UI.FormLabel>
+              <UI.Select
+                placeholder="Select one"
+                {...register('breed', {
+                  required: 'Required.',
+                })}
+              >
+                {breeds.map((breed) => (
+                  <option key={breed} value={breed}>
+                    {startCase(breed)}
+                  </option>
+                ))}
+              </UI.Select>
+              <UI.FormErrorMessage>{errors.breed?.message}</UI.FormErrorMessage>
+            </UI.FormControl>
+
+            <UI.FormControl mb={4}>
+              <UI.FormLabel>
+                Tell us about {name?.trim() || 'your dog'}
+              </UI.FormLabel>
+              <UI.Textarea
+                resize="none"
+                {...register('info', {
+                  maxLength: {
+                    value: 200,
+                    message: 'Name must be 200 characters or less.',
+                  },
+                })}
+              />
+            </UI.FormControl>
+
+            <UI.Button
+              disabled={isSubmitting}
+              colorScheme="green"
+              type="submit"
             >
-              {breeds.map((breed) => (
-                <option key={breed} value={breed}>
-                  {startCase(breed)}
-                </option>
-              ))}
-            </UI.Select>
-            <UI.FormErrorMessage>{errors.breed?.message}</UI.FormErrorMessage>
-          </UI.FormControl>
-
-          <UI.FormControl mb={4}>
-            <UI.FormLabel>
-              Tell us about {name?.trim() || 'your dog'}
-            </UI.FormLabel>
-            <UI.Textarea
-              resize="none"
-              {...register('info', {
-                maxLength: {
-                  value: 200,
-                  message: 'Name must be 200 characters or less.',
-                },
-              })}
-            />
-          </UI.FormControl>
-
-          <UI.Button colorScheme="green" type="submit">
-            Submit
-          </UI.Button>
+              Submit
+            </UI.Button>
+          </fieldset>
         </form>
       </UI.Box>
-      {/* <UI.UnorderedList>
-        <UI.ListItem>data: {util.inspect(formData)}</UI.ListItem>
-        <UI.ListItem>errors: {util.inspect(errors)}</UI.ListItem>
-      </UI.UnorderedList> */}
     </UI.Box>
   );
 };
@@ -137,7 +172,7 @@ const FormExample: React.FC = () => {
 const LincChallange1Page: React.FC = () => {
   return (
     <UI.Box p={4}>
-      <FormExample />
+      <FormExample onSubmit={() => sleep(2000)} />
     </UI.Box>
   );
 };
