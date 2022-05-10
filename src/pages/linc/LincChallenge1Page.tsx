@@ -154,7 +154,7 @@ const PupperForm: React.FC<PupperFormProps> = ({ onSubmit }) => {
               </UI.FormErrorMessage>
             </UI.FormControl>
 
-            <UI.FormControl mb={4}>
+            <UI.FormControl mb={4} isInvalid={!!errors.info}>
               <UI.FormLabel>
                 Tell us about {name?.trim() || 'your dog'}
               </UI.FormLabel>
