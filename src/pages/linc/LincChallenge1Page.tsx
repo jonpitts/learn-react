@@ -184,7 +184,7 @@ const PupperForm: React.FC<PupperFormProps> = ({ onSubmit }) => {
   );
 };
 
-const LincChallange1Page: React.FC = () => {
+const LincChallenge1Page: React.FC = () => {
   const [formCount, setFormCount] = React.useState(0);
   const [done, setDone] = React.useState(false);
 
@@ -227,4 +227,4 @@ const LincChallange1Page: React.FC = () => {
     </React.Fragment>
   );
 };
-export default LincChallange1Page;
+export default LincChallenge1Page;
