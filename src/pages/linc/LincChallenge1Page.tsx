@@ -7,6 +7,12 @@ import flatMap from 'lodash/flatMap';
 import startCase from 'lodash/startCase';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import ParticlesBg from 'particles-bg';
+import * as FramerMotion from 'framer-motion';
+
+const MotionUI = {
+  Box: FramerMotion.motion(UI.Box),
+};
 
 /**
  * Utility for simulating delays in async operations.
@@ -74,7 +80,7 @@ interface PupperFormProps {
 const PupperForm: React.FC<PupperFormProps> = ({ onSubmit }) => {
   const [breeds, loading, error] = useBreeds();
   const form = reactHookForm.useForm<PupperFormData>({
-    mode: 'onChange',
+    mode: 'onTouched',
     resolver: yupResolver(PupperFormSchema),
   });
   const {
@@ -180,16 +186,45 @@ const PupperForm: React.FC<PupperFormProps> = ({ onSubmit }) => {
 
 const LincChallange1Page: React.FC = () => {
   const [formCount, setFormCount] = React.useState(0);
+  const [done, setDone] = React.useState(false);
 
   const handleSubmit = async () => {
     await sleep(2000);
+    setDone(true);
     setFormCount(formCount + 1); // remount (and clear) form
   };
 
   return (
-    <UI.Box p={4}>
-      <PupperForm key={formCount} onSubmit={handleSubmit} />
-    </UI.Box>
+    <React.Fragment>
+      <UI.Flex
+        position="fixed"
+        zIndex={-1}
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        alignItems="center"
+        justifyContent="center"
+        bg="gray.800"
+        p={4}
+      >
+        <FramerMotion.AnimatePresence>
+          {done ? (
+            <ParticlesBg key="particles" type="lines" bg />
+          ) : (
+            <MotionUI.Box
+              key="form"
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0 }}
+              width="100%"
+            >
+              <PupperForm key={formCount} onSubmit={handleSubmit} />
+            </MotionUI.Box>
+          )}
+        </FramerMotion.AnimatePresence>
+      </UI.Flex>
+    </React.Fragment>
   );
 };
 export default LincChallange1Page;
