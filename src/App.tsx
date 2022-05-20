@@ -12,7 +12,7 @@ const App: React.FC = () => {
     <BrowserRouter>
       <QueryParamProvider ReactRouterRoute={Route}>
         <Switch>
-          <Route path="/linc">
+          <Route path="/linc/challenge-1">
             <LincChallange1Page />
           </Route>
           <Route path="/compositional-patterns">
