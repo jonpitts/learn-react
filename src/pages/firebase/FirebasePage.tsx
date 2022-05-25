@@ -63,11 +63,11 @@ const FirebasePage: React.FC = () => {
         Sign Out
       </UI.Button>
       <UI.Divider />
-      <MessageList />
-      <UI.Divider />
       <UI.Button colorScheme="green" onClick={handleAddClick}>
         Add test message
       </UI.Button>
+      <UI.Divider />
+      <MessageList />
     </React.Fragment>
   );
 };
