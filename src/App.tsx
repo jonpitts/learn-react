@@ -6,6 +6,7 @@ import ExamplesPage from './pages/ExamplesPage';
 import CompositionalPatterns from './pages/patterns/CompositionalPatternsPage';
 import JavascriptPatterns from './pages/patterns/JavascriptPatternsPage';
 import LincChallange1Page from './pages/challenges/LincChallenge1Page';
+import FirebasePage from './pages/firebase/FirebasePage';
 
 const App: React.FC = () => {
   return (
@@ -20,6 +21,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/patterns/js">
             <JavascriptPatterns />
+          </Route>
+          <Route path="/firebase">
+            <FirebasePage />
           </Route>
           <Route path="/:segment">
             <ExamplesPage />
